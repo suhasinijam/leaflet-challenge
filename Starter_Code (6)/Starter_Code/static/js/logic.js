@@ -1,6 +1,6 @@
 // Store our API endpoint as queryUrl and tectonicplatesUrl
-var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
-var tectonicplatesUrl = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json"
+let queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
+let tectonicplatesUrl = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json"
 
 // Perform a GET request to the query URL
 d3.json(queryUrl).then(function (data) {
@@ -30,14 +30,14 @@ function createFeatures(earthquakeData) {
 
   // Create a GeoJSON layer that contains the features array on the earthquakeData object.
   // Run the onEachFeature function once for each piece of data in the array.
-  var earthquakes = L.geoJSON(earthquakeData, {
+  let earthquakes = L.geoJSON(earthquakeData, {
     onEachFeature: onEachFeature,
 
     // Point to layer used to alter markers
     pointToLayer: function(feature, latlng) {
 
       // Determine the style of markers based on properties
-      var markers = {
+      let markers = {
         radius: feature.properties.mag * 20000,
         fillColor: chooseColor(feature.geometry.coordinates[2]),
         fillOpacity: 0.7,
@@ -55,19 +55,19 @@ function createFeatures(earthquakeData) {
 function createMap(earthquakes) {
 
   // Create tile layers
-  var satellite = L.tileLayer('https://api.mapbox.com/styles/v1/{style}/tiles/{z}/{x}/{y}?access_token={access_token}', {
+  let satellite = L.tileLayer('https://api.mapbox.com/styles/v1/{style}/tiles/{z}/{x}/{y}?access_token={access_token}', {
     attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
     style:    'mapbox/satellite-v9',
     access_token: api_key
   });
   
-  var grayscale = L.tileLayer('https://api.mapbox.com/styles/v1/{style}/tiles/{z}/{x}/{y}?access_token={access_token}', {
+  let grayscale = L.tileLayer('https://api.mapbox.com/styles/v1/{style}/tiles/{z}/{x}/{y}?access_token={access_token}', {
     attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
     style:    'mapbox/light-v11',
     access_token: api_key
   });
 
-  var outdoors = L.tileLayer('https://api.mapbox.com/styles/v1/{style}/tiles/{z}/{x}/{y}?access_token={access_token}', {
+  let outdoors = L.tileLayer('https://api.mapbox.com/styles/v1/{style}/tiles/{z}/{x}/{y}?access_token={access_token}', {
     attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
     style:    'mapbox/outdoors-v12',
     access_token: api_key
@@ -88,34 +88,34 @@ function createMap(earthquakes) {
     });
 
     // Create a baseMaps object.
-    var baseMaps = {
+    let baseMaps = {
         "Satellite": satellite,
         "Grayscale": grayscale,
         "Outdoors": outdoors
     };
 
     // Create an overlay object to hold our overlay.
-    var overlayMaps = {
+    let overlayMaps = {
         "Earthquakes": earthquakes,
         "Tectonic Plates": tectonicPlates
     };
     
     // Create our map, giving it the satellite map and earthquakes layers to display on load.
-  var myMap = L.map("map", {
+  let myMap = L.map("map", {
     center: [37.09, -95.71],
     zoom: 5,
     layers: [satellite, earthquakes, tectonicPlates]
   });
 
   // Add legend
-  var legend = L.control({position: "bottomright"});
+  let legend = L.control({position: "bottomright"});
   legend.onAdd = function() {
-    var div = L.DomUtil.create("div", "info legend");
+    let div = L.DomUtil.create("div", "info legend");
 	depth = [-10, 10, 30, 50, 70, 90];
 
         div.innerHTML += "<h3 style='text-align: center'>Depth</h3>"
 
-      for (var i = 0; i < depth.length; i++) {
+      for (let i = 0; i < depth.length; i++) {
       div.innerHTML +=
       '<i style="background:' + chooseColor(depth[i] + 1) + '"></i> ' + depth[i] + (depth[i + 1] ? '&ndash;' + depth[i + 1] + '<br>' : '+');
     }
